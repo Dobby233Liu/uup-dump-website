@@ -113,6 +113,83 @@ EOD;
     $iso639lang = preg_replace("/-.*/i", "", $s['code']);
     $title = htmlentities($title);
 
+    if(isset($_GET['color'])) {
+        $baseColor = $_GET['color'];
+    } else {
+        $baseColor = isset($_COOKIE['Custom-Color']) ? $_COOKIE['Custom-Color'] : 0;
+    }
+
+    if($baseColor && preg_match('/^[0-9a-fA-F]{6}$/', $baseColor)) {
+        $r = hexdec(substr($baseColor, 0, 2));
+        $g = hexdec(substr($baseColor, 2, 2));
+        $b = hexdec(substr($baseColor, 4, 2));
+
+        $r1 = $r * 0.9;
+        $g1 = $g * 0.9;
+        $b1 = $b * 0.9;
+
+        $r2 = 242.25 + $r * 0.05;
+        $g2 = 242.25 + $g * 0.05;
+        $b2 = 242.25 + $b * 0.05;
+
+        $r3 = 200 + $r * 0.12;
+        $g3 = 200 + $g * 0.12;
+        $b3 = 200 + $b * 0.12;
+
+        $colorChanger = <<<EOD
+<style>
+    .ui.primary.button,
+    .ui.blue.button {
+        background-color: rgb($r, $g, $b);
+    }
+
+    .ui.primary.button:hover,
+    .ui.blue.button:hover,
+    .ui.primary.button:focus,
+    .ui.blue.button:focus {
+        background-color: rgb($r1, $g1, $b1);
+    }
+
+    a {
+        color: rgb($r, $g, $b);
+    }
+
+    a:hover,
+    a:focus,
+    .ui.steps .step.active .title {
+        color: rgb($r1, $g1, $b1);
+    }
+
+    .ui.info.message,
+    .ui.positive.message,
+    .ui.success.message,
+    .ui.attached.info.message,
+    .ui.attached.positive.message,
+    .ui.attached.success.message {
+        box-shadow: 0 0 0 1px rgb($r3, $g3, $b3) inset, 0 0 0 0 transparent;
+        background-color: rgb($r2, $g2, $b2);
+        color: #000;
+    }
+
+
+    .ui.info.message .header,
+    .ui.positive.message .header,
+    .ui.success.message .header,
+    .ui.attached.info.message .header,
+    .ui.attached.positive.message .header,
+    .ui.attached.success.message .header {
+        color: #000;
+    }
+</style>
+
+EOD;
+        setcookie('Custom-Color', $baseColor, time()+2592000);
+
+    } else {
+        $colorChanger = "";
+        setcookie('Custom-Color');
+    }
+
     echo <<<HTML
 <!DOCTYPE html>
 <html lang="$iso639lang">
@@ -137,6 +214,7 @@ EOD;
 
         <title>$title</title>
 
+        $colorChanger
         <script>
             function openLanguageSelector() {
                 $('.ui.modal.select-language').modal('show');
