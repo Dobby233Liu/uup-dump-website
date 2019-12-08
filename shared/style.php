@@ -48,8 +48,8 @@ function styleUpper($pageType = 'home', $subtitle = '') {
         }
     }
 
-    if(isset($_GET['dark'])) {
-        switch($_GET['dark']) {
+    if(isset($_POST['dark'])) {
+        switch($_POST['dark']) {
             case 0:
                 setcookie('Dark-Mode', 0, time()+2592000);
                 $enableDarkMode = 0;
@@ -72,13 +72,9 @@ function styleUpper($pageType = 'home', $subtitle = '') {
     $url = htmlentities(getUrlWithoutParam('dark'));
 
     $darkSwitch = <<<EOD
-<a class="item light-mode-btn" href="{$url}dark=0">
-    <i class="eye slash icon"></i>
-    {$s['lightMode']}
-</a>
-<a class="item dark-mode-btn" href="{$url}dark=1">
-    <i class="eye icon"></i>
-    {$s['darkMode']}
+<a class="item" onclick="openColorSelector();">
+    <i class="paint brush icon"></i>
+    theme button
 </a>
 EOD;
 
@@ -113,8 +109,8 @@ EOD;
     $iso639lang = preg_replace("/-.*/i", "", $s['code']);
     $title = htmlentities($title);
 
-    if(isset($_GET['color'])) {
-        $baseColor = $_GET['color'];
+    if(isset($_POST['color'])) {
+        $baseColor = $_POST['color'];
     } else {
         $baseColor = isset($_COOKIE['Custom-Color']) ? $_COOKIE['Custom-Color'] : 0;
     }
@@ -216,6 +212,11 @@ EOD;
 
         $colorChanger
         <script>
+            function openColorSelector() {
+                $('.ui.modal.select-color').modal('show');
+                $('.ui.sidebar').sidebar('hide');
+            }
+
             function openLanguageSelector() {
                 $('.ui.modal.select-language').modal('show');
                 $('.ui.sidebar').sidebar('hide');
@@ -263,6 +264,82 @@ EOD;
 
             $languageCoreSelectorModal
 
+            <form class="ui form normal mini modal select-color" method="post">
+                <div class="header">
+                    <h3>theme selection dialog testing</h3>
+                </div>
+                <div class="content">
+                    <h4>
+                        <i class="eye slash icon"></i>
+                        eye slash intensity
+                    </h4>
+                    <div class="grouped fields">
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="dark" value="-1" checked>
+                                <label>auto</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="dark" value="0">
+                                <label>high</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="dark" value="1">
+                                <label>low</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>
+                        <i class="tint icon"></i>
+                        color selection
+                    </h4>
+                    <div class="grouped fields">
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="color" value="0" checked>
+                                <label>default</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="color" value="ff00ff">
+                                <label>debug magenta</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="color" value="0070bd">
+                                <label>boring blue</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="color" value="ff2400">
+                                <label>scarlet</label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui radio checkbox">
+                                <input type="radio" name="color" value="e0115f">
+                                <label>ruby</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="actions">
+                    <button class="ui primary button">
+                        <i class="checkmark icon"></i>
+                        {$s['ok']}
+                    </button>
+                </div>
+            </form>
+
             <div class="ui container">
 HTML;
 }
@@ -290,6 +367,7 @@ function styleLower() {
             </div>
         </div>
     </body>
+    <script>$('.ui.checkbox').checkbox();</script>
 </html>
 HTML;
 }

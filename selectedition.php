@@ -250,8 +250,6 @@ EOD;
       </div>
 </div>
 
-<script>$('.ui.checkbox').checkbox();</script>
-
 <?php
 styleLower();
 ?>
