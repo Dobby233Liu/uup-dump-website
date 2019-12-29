@@ -101,3 +101,9 @@ limitations under the License.
     margin-top: .5em;
     line-height: 300%;
 }
+
+/**
+i.flag.utf8:before { /** Pseduo flag
+	background: url(../img/utf8-flag.png) no-repeat 0px 0px;
+}
+**/

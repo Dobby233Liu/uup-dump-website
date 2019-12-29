@@ -59,6 +59,7 @@ $languageCoreSelectorModal = <<<EOD
     <div class="content">
         <p><a href="{$url}lang=de-de"><i class="de flag"></i>Deutsch</a></p>
         <p><a href="{$url}lang=en-us"><i class="us flag"></i>English (United States)</a></p>
+		<p><a href="{$url}lang=qps-ploc"><i class="us flag"></i>[972d] Ƥşḗŭḓǿ</a></p>
         <p><a href="{$url}lang=es-ar"><i class="ar flag"></i>Español (Argentina)</a></p>
         <p><a href="{$url}lang=fr-fr"><i class="fr flag"></i>Français (France)</a></p>
         <p><a href="{$url}lang=it-it"><i class="it flag"></i>Italiano</a></p>
